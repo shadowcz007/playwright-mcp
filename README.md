@@ -251,6 +251,11 @@ The Playwright MCP provides a set of tools for browser automation. Here are all 
   - Description: Close the page
   - Parameters: None
 
+- **browser_execute_javascript**
+  - Description: Execute JavaScript code in the browser context and return the result
+  - Parameters:
+    - `code` (string): JavaScript code to execute
+    - `timeout` (number, optional): Script execution timeout in milliseconds, default is 30000
 
 ### Vision Mode
 

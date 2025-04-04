@@ -19,6 +19,7 @@ import * as snapshot from './tools/snapshot';
 import * as common from './tools/common';
 import * as screenshot from './tools/screenshot';
 import * as tabs from './tools/tabs';
+import * as javascript from './tools/javascript';
 import { console } from './resources/console';
 
 import type { Tool } from './tools/tool';
@@ -33,6 +34,7 @@ const commonTools: Tool[] = [
   common.install,
   tabs.listTabs,
   tabs.newTab,
+  javascript.executeJavaScript,
 ];
 
 const snapshotTools: Tool[] = [
