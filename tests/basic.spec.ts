@@ -39,8 +39,9 @@ test('test tool list', async ({ client, visionClient }) => {
     'browser_install',
     'browser_list_tabs',
     'browser_new_tab',
+    'browser_execute_javascript',
     'browser_select_tab',
-    'browser_close_tab',
+    'browser_close_tab'
   ]);
 
   const { tools: visionTools } = await visionClient.listTools();
@@ -61,6 +62,7 @@ test('test tool list', async ({ client, visionClient }) => {
     'browser_install',
     'browser_list_tabs',
     'browser_new_tab',
+    'browser_execute_javascript',
     'browser_select_tab',
     'browser_close_tab',
   ]);
@@ -441,4 +443,52 @@ test('type slowly', async ({ client }) => {
       '[LOG] Key pressed: Enter Text: Hi!',
     ].join('\n'),
   }]);
+});
+
+test('browser_execute_javascript', async ({ client }) => {
+  await client.callTool({
+    name: 'browser_navigate',
+    arguments: {
+      url: 'data:text/html,<html><title>JavaScript Test</title><body>Hello, world!</body></html>',
+    },
+  });
+
+  // 测试基本的JavaScript执行
+  expect(await client.callTool({
+    name: 'browser_execute_javascript',
+    arguments: {
+      code: 'return document.title;',
+    },
+  })).toHaveTextContent('JavaScript Test');
+
+  // 测试返回对象
+  expect(await client.callTool({
+    name: 'browser_execute_javascript',
+    arguments: {
+      code: 'return { hello: "world", number: 42 };',
+    },
+  })).toHaveTextContent(`{
+  "hello": "world",
+  "number": 42
+}`);
+
+  // 测试修改DOM并验证
+  await client.callTool({
+    name: 'browser_execute_javascript',
+    arguments: {
+      code: 'document.body.innerHTML = "<div id=\'test\'>Modified content</div>";',
+    },
+  });
+
+  expect(await client.callTool({
+    name: 'browser_snapshot',
+  })).toContainTextContent('Modified content');
+
+  // 测试错误处理
+  expect(await client.callTool({
+    name: 'browser_execute_javascript',
+    arguments: {
+      code: 'throw new Error("Test error");',
+    },
+  })).toHaveTextContent('Error: Test error');
 });
