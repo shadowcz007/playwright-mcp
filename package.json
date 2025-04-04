@@ -1,17 +1,17 @@
 {
-  "name": "@playwright/mcp",
+  "name": "@playwright/mcp_aio",
   "version": "0.0.10",
   "description": "Playwright Tools for MCP",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/microsoft/playwright-mcp.git"
+    "url": "git+https://github.com/shadowcz007/playwright-mcp.git"
   },
   "homepage": "https://playwright.dev",
   "engines": {
     "node": ">=18"
   },
   "author": {
-    "name": "Microsoft Corporation"
+    "name": "shadow"
   },
   "license": "Apache-2.0",
   "scripts": {
@@ -19,7 +19,7 @@
     "lint": "eslint .",
     "watch": "tsc --watch",
     "test": "playwright test",
-    "clean": "rm -rf lib",
+    "clean": "node -e \"if(require('fs').existsSync('lib')) require('fs').rmSync('lib', {recursive: true})\"",
     "npm-publish": "npm run clean && npm run build && npm run test && npm publish"
   },
   "exports": {
